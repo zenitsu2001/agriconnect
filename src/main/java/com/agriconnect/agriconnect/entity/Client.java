@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 public class Client extends Utilisateur {
 
@@ -23,8 +22,6 @@ public class Client extends Utilisateur {
     @Column(name = "raison_sociale")
     private String raisonSociale;
 
-    // ── Commandes passées par le client ───────────────────────────────────────
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<Commande> commandes = new ArrayList<>();
 }

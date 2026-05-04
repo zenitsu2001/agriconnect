@@ -1,7 +1,11 @@
 package com.agriconnect.agriconnect.entity;
 
+import com.agriconnect.agriconnect.entity.Produit;
+import com.agriconnect.agriconnect.entity.Stock;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -13,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 public class Agriculteur extends Utilisateur {
 
@@ -24,13 +27,14 @@ public class Agriculteur extends Utilisateur {
 
     private String localisation;
 
-    // ── Produits publiés par l'agriculteur ────────────────────────────────────
+    /**
+     * @Builder.Default est incompatible avec @SuperBuilder.
+     * Avec @SuperBuilder, on initialise les listes directement ici.
+     * Le constructeur sans argument de @NoArgsConstructor les initialisera aussi.
+     */
     @OneToMany(mappedBy = "agriculteur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<Produit> produits = new ArrayList<>();
 
-    // ── Stock géré par l'agriculteur ─────────────────────────────────────────
     @OneToMany(mappedBy = "agriculteur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<Stock> stocks = new ArrayList<>();
 }
