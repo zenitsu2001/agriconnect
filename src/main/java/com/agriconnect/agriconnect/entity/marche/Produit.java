@@ -6,10 +6,13 @@ import com.agriconnect.agriconnect.enums.CategorieProduit;
 import com.agriconnect.agriconnect.enums.StatutProduit;
 import com.agriconnect.agriconnect.enums.Unite;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 // ===== Produit.java =====  (annonce publiée sur le marché)
 @Entity
@@ -60,6 +63,14 @@ public class Produit extends BaseEntity {
 
     @Column(nullable = false)
     private Integer nombreVues;
+
+    @ElementCollection
+    @CollectionTable(name = "produit_images", joinColumns = @JoinColumn(name = "produit_id"))
+    @OrderColumn(name = "position")              // la première photo est l'image principale
+    @Column(name = "url", length = 255)
+    @Size(max = 3)                               // jakarta.validation.constraints.Size
+    @Builder.Default
+    private List<String> images = new ArrayList<>();
 
     @PrePersist
     protected void initialiserDefauts() {

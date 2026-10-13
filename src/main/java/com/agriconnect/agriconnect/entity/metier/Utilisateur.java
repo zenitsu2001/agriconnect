@@ -45,6 +45,9 @@ public abstract class Utilisateur extends BaseEntity {
     @Column(nullable = false)
     private Boolean actif;
 
+    @Column(length = 255)
+    private String photoProfilUrl;
+
     private LocalDateTime derniereConnexion;
 
     /** Profil déduit de la sous-classe (non persisté) : sert aux rôles JWT et à la navigation. */
