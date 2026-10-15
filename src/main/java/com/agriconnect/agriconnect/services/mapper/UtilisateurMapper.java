@@ -9,9 +9,9 @@ import com.agriconnect.agriconnect.services.config.ReferenceResolver;
 import com.agriconnect.agriconnect.services.dto.metier.request.RegisterRequest;
 import com.agriconnect.agriconnect.services.dto.metier.request.UpdateAgriculteurRequest;
 import com.agriconnect.agriconnect.services.dto.metier.request.UpdateProfilRequest;
+import com.agriconnect.agriconnect.services.dto.metier.response.ExploitationResponse;
 import com.agriconnect.agriconnect.services.dto.metier.response.UtilisateurResponse;
 import com.agriconnect.agriconnect.services.dto.metier.response.UtilisateurResume;
-import com.agriconnect.agriconnect.services.mapper.ReferenceMapper;
 import org.hibernate.Hibernate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -102,6 +102,10 @@ public interface UtilisateurMapper {
     @Mapping(target = "langue", source = "langue")          // code -> LangueSupportee via ReferenceResolver
     void mettreAJour(UpdateProfilRequest request, @MappingTarget Utilisateur utilisateur);
 
-    @Mapping(source = "localisation", target = "exploitation")
-    void mettreAJour(UpdateAgriculteurRequest request, @MappingTarget Agriculteur agriculteur);
+//    // (la validation de la localisation exige une logique que MapStruct ne peut pas porter)
+    @Mapping(source = "exploitation", target = "localisation")
+    ExploitationResponse toExploitation(Agriculteur agriculteur);
+
+//    @Mapping(source = "localisation", target = "exploitation")
+//    void mettreAJour(UpdateAgriculteurRequest request, @MappingTarget Agriculteur agriculteur);
 }

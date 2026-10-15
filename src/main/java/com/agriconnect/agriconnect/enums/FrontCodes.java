@@ -1,5 +1,7 @@
 package com.agriconnect.agriconnect.enums;
 
+import com.agriconnect.agriconnect.exception.CodeInconnuException;
+
 // ===== FrontCodes.java =====
 public final class FrontCodes {
     private FrontCodes() {}
@@ -14,6 +16,6 @@ public final class FrontCodes {
         for (E value : type.getEnumConstants()) {
             if (value.getCode().equalsIgnoreCase(code)) return value;
         }
-        throw new IllegalArgumentException("Code inconnu pour " + type.getSimpleName() + " : " + code);
+        throw new CodeInconnuException(type.getSimpleName(), code);
     }
 }
