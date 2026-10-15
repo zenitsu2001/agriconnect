@@ -1,0 +1,32 @@
+Voici une méthode compatible avec les anciennes versions de Windows PowerShell.
+1. Génère un secret JWT sécurisé
+Copie-colle ces commandes dans PowerShell :
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$bytes = New-Object byte[] 32
+$rng.GetBytes($bytes)
+$secret = [Convert]::ToBase64String($bytes)
+$rng.Dispose()
+
+Write-Host "JWT_SECRET=$secret"
+
+
+Cette méthode génère 32 octets aléatoires cryptographiquement sécurisés et les encode en Base64.
+2. Configure la variable pour ton application
+Dans le même terminal :
+$env:JWT_SECRET = $secret
+
+
+Vérifie que la variable est définie sans afficher le secret :
+if ($env:JWT_SECRET.Length -ge 32) {
+    Write-Host "JWT_SECRET correctement défini."
+}
+
+
+3. Démarre Agriconnect
+Place-toi dans le dossier de ton projet Spring Boot, puis exécute :
+cd C:\data\Afrilins\spring\agriconnect
+mvn spring-boot:run
+
+
+Si tu lances l'application depuis IntelliJ IDEA plutôt que depuis ce terminal, ajoute la variable JWT_SECRET dans Run → Edit Configurations → Environment variables.
+À retenir : cette configuration PowerShell est temporaire. Pour la production, conserve le secret dans un gestionnaire de secrets ou dans une variable d'environnement sécurisée. Ne partage jamais sa valeur et ne la committe pas dans Git.
