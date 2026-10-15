@@ -1,5 +1,11 @@
 package com.agriconnect.agriconnect.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 // ===== StatutPaiement.java =====
-public enum StatutPaiement { EN_ATTENTE, REUSSI, ECHOUE, REMBOURSE }
+@Getter @RequiredArgsConstructor
+public enum StatutPaiement implements FrontCode {
+    EN_ATTENTE("pending"), REUSSI("success"), ECHOUE("failed"), REMBOURSE("refunded");
+    private final String code;
+}
 

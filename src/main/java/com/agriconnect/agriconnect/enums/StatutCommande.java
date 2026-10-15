@@ -1,4 +1,10 @@
 package com.agriconnect.agriconnect.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 // ===== StatutCommande.java =====
-public enum StatutCommande { EN_ATTENTE, CONFIRMEE, LIVREE, ANNULEE }
+@Getter @RequiredArgsConstructor
+public enum StatutCommande implements FrontCode {
+    EN_ATTENTE("pending"), CONFIRMEE("confirmed"), LIVREE("delivered"), ANNULEE("cancelled");
+    private final String code;
+}
