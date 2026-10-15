@@ -7,7 +7,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 // ===== PlanAbonnement.java =====
@@ -37,14 +39,16 @@ public class PlanAbonnement extends BaseEntity {
     /** Codes de fonctionnalités incluses (clés subscription.features.*). */
     @ElementCollection
     @CollectionTable(name = "plan_fonctionnalites", joinColumns = @JoinColumn(name = "plan_id"))
+    @OrderColumn(name = "position")
     @Column(name = "code", length = 60)
     @Builder.Default
-    private Set<String> fonctionnalites = new HashSet<>();
+    private List<String> fonctionnalites = new ArrayList<>();
 
     /** Codes de limitations (clés subscription.limitations.*). */
     @ElementCollection
     @CollectionTable(name = "plan_limitations", joinColumns = @JoinColumn(name = "plan_id"))
+    @OrderColumn(name = "position")
     @Column(name = "code", length = 60)
     @Builder.Default
-    private Set<String> limitations = new HashSet<>();
+    private List<String> limitations = new ArrayList<>();
 }
