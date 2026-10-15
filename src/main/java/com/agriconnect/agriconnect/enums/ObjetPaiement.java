@@ -1,4 +1,10 @@
 package com.agriconnect.agriconnect.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 // ===== ObjetPaiement.java =====
-public enum ObjetPaiement { ABONNEMENT, BOOST }
+@Getter @RequiredArgsConstructor
+public enum ObjetPaiement implements FrontCode {
+    ABONNEMENT("subscription"), BOOST("boost");
+    private final String code;
+}

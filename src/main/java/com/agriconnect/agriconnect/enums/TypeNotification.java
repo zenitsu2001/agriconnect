@@ -1,4 +1,10 @@
 package com.agriconnect.agriconnect.enums;
-
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 // ===== TypeNotification.java =====
-public enum TypeNotification { ALERTE_METEO, PUBLICATION, MESSAGE, COMMANDE, SYSTEME }
+@Getter @RequiredArgsConstructor
+public enum TypeNotification implements FrontCode {
+    ALERTE_METEO("weatherAlert"), PUBLICATION("publication"), MESSAGE("message"),
+    COMMANDE("order"), SYSTEME("system");
+    private final String code;
+}

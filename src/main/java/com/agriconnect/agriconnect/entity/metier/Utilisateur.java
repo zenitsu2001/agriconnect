@@ -2,6 +2,7 @@ package com.agriconnect.agriconnect.entity.metier;
 
 
 import com.agriconnect.agriconnect.entity.parametre.BaseEntity;
+import com.agriconnect.agriconnect.entity.parametre.LangueSupportee;
 import com.agriconnect.agriconnect.enums.Langue;
 import com.agriconnect.agriconnect.enums.Profil;
 import jakarta.persistence.*;
@@ -38,9 +39,9 @@ public abstract class Utilisateur extends BaseEntity {
     @Column(nullable = false, length = 255)
     private String motDePasse;      // toujours le HASH (BCrypt), jamais le mot de passe en clair
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 5)
-    private Langue langue;
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false, length = 5)
+//    private Langue langue;
 
     @Column(nullable = false)
     private Boolean actif;
@@ -54,9 +55,13 @@ public abstract class Utilisateur extends BaseEntity {
     @Transient
     public abstract Profil getProfil();
 
-    @PrePersist
-    protected void initialiserDefauts() {
-        if (actif == null) actif = true;
-        if (langue == null) langue = Langue.FR;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "langue")
+    private LangueSupportee langue;
+
+//    @PrePersist
+//    protected void initialiserDefauts() {
+//        if (actif == null) actif = true;
+//        if (langue == null) langue = Langue.FR;
+//    }
 }
