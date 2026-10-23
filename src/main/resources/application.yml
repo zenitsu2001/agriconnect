@@ -24,7 +24,12 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
         use_sql_comments: true
+        default_batch_fetch_size: 50      # IMPORTANT : évite une requête par produit (images, agriculteur, région)
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 
 
@@ -135,6 +140,32 @@ agriconnect:
     issuer: agriconnect
   cors:
     allowed-origins: http://localhost:4200
+  paiement:
+    frontend-url: http://localhost:4200              # pages de retour du paiement
+    url-publique-serveur: https://votre-domaine.sn   # joignable par les prestataires (webhooks) ; en local : un tunnel (ngrok...)
+    simulation-active: true                          # ⚠️ true UNIQUEMENT en développement
+    wave:
+      actif: true
+      mode: simulation                               # simulation | reel
+      base-url: https://api.wave.com
+      cle: ${WAVE_API_KEY:}                          # clé API Wave Business
+      secret-webhook: ${WAVE_WEBHOOK_SECRET:}        # secret de signature des webhooks
+    orange:
+      actif: true
+      mode: simulation                               # tant que l'intégration réelle n'est pas faite
+      base-url: ${ORANGE_BASE_URL:}
+      cle: ${ORANGE_CLE:}
+      secret-webhook: ${ORANGE_SECRET:}
+  fichiers:
+    dossier: ./uploads                    # en production : un volume persistant (ou un stockage objet)
+    taille-max-octets: 5242880            # 5 Mo
+  marche:
+    avis-reserves-aux-acheteurs: true
+    taille-page-max: 50
+  boost:
+    prix: 5000            # FCFA par boost ; 0 = inclus dans l'abonnement, sans paiement
+    duree-jours: 30
+    premium-requis: true  # true : il faut un abonnement payant en cours pour acheter un boost
 ---
 # ?? Profil de test ????????????????????????????????????????????????????????
 spring:

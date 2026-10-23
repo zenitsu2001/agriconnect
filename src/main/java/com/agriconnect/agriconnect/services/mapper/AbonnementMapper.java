@@ -5,6 +5,7 @@ import com.agriconnect.agriconnect.entity.abonnement.Paiement;
 import com.agriconnect.agriconnect.entity.abonnement.PlanAbonnement;
 import com.agriconnect.agriconnect.services.config.CentralConfig;
 import com.agriconnect.agriconnect.services.dto.abonnement.response.AbonnementResponse;
+import com.agriconnect.agriconnect.services.dto.abonnement.response.PaiementInitieResponse;
 import com.agriconnect.agriconnect.services.dto.abonnement.response.PaiementResponse;
 import com.agriconnect.agriconnect.services.dto.abonnement.response.PlanResponse;
 import org.mapstruct.Mapper;
@@ -18,4 +19,5 @@ public interface AbonnementMapper {
     List<PlanResponse> toPlanDtos(List<PlanAbonnement> plans);
     PaiementResponse toDto(Paiement paiement);
     AbonnementResponse toDto(Abonnement abonnement);        // plan et paiement via les méthodes ci-dessus
+    PaiementInitieResponse toInitie(Paiement paiement);
 }

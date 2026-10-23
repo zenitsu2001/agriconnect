@@ -8,6 +8,7 @@ import com.agriconnect.agriconnect.security.UtilisateurCourant;
 import com.agriconnect.agriconnect.services.dto.metier.Saisies;
 import com.agriconnect.agriconnect.services.dto.metier.request.UpdateProfilRequest;
 import com.agriconnect.agriconnect.services.dto.metier.response.UtilisateurResponse;
+import com.agriconnect.agriconnect.services.impl.marche.FichierService;
 import com.agriconnect.agriconnect.services.mapper.UtilisateurMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class UtilisateurService {
     private final UtilisateurRepository utilisateurs;
     private final LangueSupporteeRepository langues;
     private final UtilisateurMapper mapper;
+    private final FichierService fichiers ;
 
     @Transactional(readOnly = true)
     public UtilisateurResponse moi() {
@@ -40,6 +42,10 @@ public class UtilisateurService {
             boolean pris = utilisateurs.findByTelephone(telephone)
                     .filter(autre -> !autre.getId().equals(utilisateur.getId())).isPresent();
             if (pris) throw ApiException.conflict("errors.register.phoneTaken");
+        }
+        if (request.photoProfilUrl() != null && !request.photoProfilUrl().isBlank()
+                && !fichiers.estImageStockee(request.photoProfilUrl())) {
+            throw ApiException.badRequest("errors.file.invalid");
         }
 
         mapper.mettreAJour(request, utilisateur);          // champs null ignorés

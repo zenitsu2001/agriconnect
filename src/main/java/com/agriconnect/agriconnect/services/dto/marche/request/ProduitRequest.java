@@ -17,5 +17,4 @@ public record ProduitRequest(
         @NotNull @DecimalMin("0.01") BigDecimal prix,
         @Size(max = 3) List<@Size(max = 255) String> images,   // 3 photos maximum ; l'emoji sert de repli
         @Size(max = 16) String emoji,
-        String produitReferenceCode,
-        boolean booster) {}
+        String produitReferenceCode) {}

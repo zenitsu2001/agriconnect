@@ -2,16 +2,19 @@ package com.agriconnect.agriconnect.services.impl.metier;
 
 import com.agriconnect.agriconnect.entity.parametre.Region;
 import com.agriconnect.agriconnect.exception.ApiException;
+import com.agriconnect.agriconnect.repository.abonnement.PlanAbonnementRepository;
 import com.agriconnect.agriconnect.repository.marche.ProduitReferenceRepository;
 import com.agriconnect.agriconnect.repository.parametre.CommuneRepository;
 import com.agriconnect.agriconnect.repository.parametre.DepartementRepository;
 import com.agriconnect.agriconnect.repository.parametre.LangueSupporteeRepository;
 import com.agriconnect.agriconnect.repository.parametre.RegionRepository;
+import com.agriconnect.agriconnect.services.dto.abonnement.response.PlanResponse;
 import com.agriconnect.agriconnect.services.dto.marche.ProduitReferenceDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.CommuneDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.DepartementDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.LangueDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.RegionDto;
+import com.agriconnect.agriconnect.services.mapper.AbonnementMapper;
 import com.agriconnect.agriconnect.services.mapper.ReferenceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -31,6 +34,8 @@ public class ReferenceService {
     private final CommuneRepository communes;
     private final ProduitReferenceRepository produitsReference;
     private final ReferenceMapper mapper;
+    private final AbonnementMapper abonnementMapper;
+    private final PlanAbonnementRepository plansRepo ;
 
     public List<LangueDto> langues() {
         return mapper.toLangueDtos(langues.findByActifTrueOrderByOrdreAsc());
@@ -61,5 +66,9 @@ public class ReferenceService {
 
     private Region region(String code) {
         return regions.findByCode(code).orElseThrow(() -> ApiException.notFound("errors.resource.notFound"));
+    }
+
+    public List<PlanResponse> plans() {
+        return abonnementMapper.toPlanDtos(plansRepo.findByActifTrueOrderByOrdreAffichageAsc());
     }
 }

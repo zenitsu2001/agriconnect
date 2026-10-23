@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers("/api/auth/**", "/api/reference/**",
+                        .requestMatchers("/api/auth/**", "/api/reference/**", "/api/paiements/notifications/**", "/fichiers/**",
                                 "/v3/api-docs/**", "/swagger-ui/**", "/actuator/health").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(o -> o.jwt(j -> j.jwtAuthenticationConverter(convertisseur)));

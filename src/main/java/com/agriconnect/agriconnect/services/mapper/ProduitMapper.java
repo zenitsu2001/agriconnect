@@ -11,10 +11,7 @@ import com.agriconnect.agriconnect.services.dto.marche.request.CommandeRequest;
 import com.agriconnect.agriconnect.services.dto.marche.request.ProduitRequest;
 import com.agriconnect.agriconnect.services.dto.marche.response.*;
 import com.agriconnect.agriconnect.services.mapper.UtilisateurMapper;
-import org.mapstruct.InheritConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 // ===== ProduitMapper.java =====
 @Mapper(config = CentralConfig.class, uses = {UtilisateurMapper.class, ReferenceResolver.class})
@@ -41,6 +38,8 @@ public interface ProduitMapper {
     Produit toEntity(ProduitRequest request);
 
     @InheritConfiguration(name = "toEntity")
+    @Mapping(target = "description", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    @Mapping(target = "emoji", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     void mettreAJour(ProduitRequest request, @MappingTarget Produit produit);
 
     BoostResponse toResponse(Boost boost);
