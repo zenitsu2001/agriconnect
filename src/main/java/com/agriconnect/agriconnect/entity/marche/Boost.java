@@ -32,6 +32,14 @@ public class Boost extends BaseEntity {
     @JoinColumn(name = "paiement_id")
     private Paiement paiement;
 
+    // Boost.java : AJOUTER ce champ (un boost non payé ne doit jamais compter comme actif)
+    @Column(nullable = false)
+    private Boolean actif;                 // true seulement après confirmation du paiement (ou si le boost est gratuit)
+
+    @PrePersist
+    protected void initialiserDefauts() {
+        if (actif == null) actif = false;
+    }
     public boolean isEnCours(LocalDateTime maintenant) {
         return !maintenant.isBefore(dateDebut) && !maintenant.isAfter(dateFin);
     }

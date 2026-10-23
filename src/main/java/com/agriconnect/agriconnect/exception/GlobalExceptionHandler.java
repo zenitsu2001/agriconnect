@@ -1,4 +1,6 @@
 package com.agriconnect.agriconnect.exception;// ===== GlobalExceptionHandler.java =====
+import com.agriconnect.agriconnect.exception.paiement.PasserelleException;
+import com.agriconnect.agriconnect.exception.paiement.SignatureInvalideException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -67,5 +71,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail pd = ProblemDetail.forStatus(status);
         pd.setProperty("code", code);
         return pd;
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    ProblemDetail parametreInvalide(MethodArgumentTypeMismatchException e) {
+        return probleme(HttpStatus.BAD_REQUEST, "errors.request.malformed");
+    }
+
+
+    @ExceptionHandler(PasserelleException.class)
+    ProblemDetail prestataire(PasserelleException e) {
+        log.error("Erreur prestataire de paiement : {}", e.getMessage(), e);
+        return probleme(HttpStatus.BAD_GATEWAY, "errors.payment.providerUnavailable");
+    }
+
+    @ExceptionHandler(SignatureInvalideException.class)
+    ProblemDetail signatureInvalide(SignatureInvalideException e) {
+        return probleme(HttpStatus.UNAUTHORIZED, "errors.payment.invalidSignature");
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        ProblemDetail body = probleme(HttpStatus.PAYLOAD_TOO_LARGE, "errors.file.tooLarge");
+        return handleExceptionInternal(ex, body, headers, HttpStatus.PAYLOAD_TOO_LARGE, request);
     }
 }

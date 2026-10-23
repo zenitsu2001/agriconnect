@@ -20,5 +20,7 @@ public class ApiException extends RuntimeException {
     public static ApiException forbidden(String code)    { return new ApiException(HttpStatus.FORBIDDEN, code); }
     public static ApiException notFound(String code)     { return new ApiException(HttpStatus.NOT_FOUND, code); }
     public static ApiException conflict(String code)     { return new ApiException(HttpStatus.CONFLICT, code); }
+    public static ApiException badGateway(String code) { return new ApiException(HttpStatus.BAD_GATEWAY, code); }
+
 }
 

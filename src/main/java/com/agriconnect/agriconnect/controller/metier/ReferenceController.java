@@ -1,5 +1,6 @@
 package com.agriconnect.agriconnect.controller.metier;
 
+import com.agriconnect.agriconnect.services.dto.abonnement.response.PlanResponse;
 import com.agriconnect.agriconnect.services.dto.marche.ProduitReferenceDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.CommuneDto;
 import com.agriconnect.agriconnect.services.dto.parametrage.DepartementDto;
@@ -53,5 +54,10 @@ public class ReferenceController {
 
     private static <T> ResponseEntity<T> cache(T corps) {
         return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofHours(1)).cachePublic()).body(corps);
+    }
+
+    @GetMapping("/plans")
+    public ResponseEntity<List<PlanResponse>> plans() {
+        return cache(referenceService.plans());
     }
 }
